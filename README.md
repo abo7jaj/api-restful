@@ -25,9 +25,9 @@ Second version accept image directory management and image upload in a secure wa
 
 Third version give catalog at root call (only in edit mode for safety)
 - I've added a cache engine callable in begining of function
-  -  $api->metier->cache(3600*24); // return cache if available, 1day
+  -  ```php $api->metier->cache(3600*24); // return cache if available, 1day```
 - I've added a session/context système based on token
-  - $api->session
+  - ```php $api->session```
 - Method OPTIONS provide fields descriptions 
 
 # Coding

@@ -8,6 +8,9 @@
 // WARNING : must be turned to FALSE when API is configured 
 define('EDIT_MODE', true);
 
+// email alerted when attacks append
+define('EMAIL_ALERT','user@domain.com');
+
 // MySQLi access
 define('DB_SERVER', '127.0.0.1');
 define('DB_DATABASE', 'my_database');
@@ -77,6 +80,7 @@ $API_available = array('GET' => array(
         'activity',
         'authors'
     ), 'OPTIONS' => array(
+        'authors'
     )
 );
 

@@ -4,10 +4,10 @@
  * \author      Norbert Penel
  * \version     1.0
  * \date        18 aout 2016
- * \brief       DÃ©finit le coeur de l'API et l'interface des fonctions utilisateurs
+ * \brief       Définit le coeur de l'API et l'interface des fonctions utilisateurs
  *
  * \details    Cette classe surcharge les accesseurs standards du module_voiture pour
- *                  convenir aux spÃ©cificitÃ©s des diffÃ©rents modÃ¨les possibles.
+ *                  convenir aux spécificités des différents modèles possibles.
  */
 require_once (ROOT_PATH.'/includes/core/db.driver.inc.php');
 require_once (ROOT_PATH.'/includes/core/metier.inc.php');
@@ -25,7 +25,7 @@ class RestUtils
     public $metier, $ctrl; // sub classes
     public $error; // errors comming from control class
     public $auth; // info setup during auth
-    public $debug, $log; // log 
+    public $debug, $log; // log
     public $format; // format specified by argument
 
     /**
@@ -54,7 +54,7 @@ class RestUtils
     public function processRequest()
     {
         global $API_restriction;
-        if ($this->is_banned()) { // si t es blacklistÃ© tu dÃ©gages et on te dis que t as foirÃ© ton auth
+        if ($this->is_banned()) { // si t es blacklisté tu dégages et on te dis que t as foiré ton auth
             $this->report_ip($_GET['api_key'], 'IP refused');
             $this->sendResponse(401);
             die();
@@ -64,7 +64,7 @@ class RestUtils
         //header('Access-Control-Allow-Headers: Content-Type');
         header('Access-Control-Allow-Headers: Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With');
 //      header('Access-Control-Max-Age: 1000');
-        // authentication required 
+        // authentication required
         // or by basic user password
         // or by api_key
         if (isset($_GET['api_key'])) {
@@ -300,7 +300,7 @@ class RestUtils
 
     private function format_response($body)
     {
-        // add signature 
+        // add signature
         if ($_SERVER['SERVER_SIGNATURE'] != '') {
             $body['signature'] = $_SERVER['SERVER_SIGNATURE'];
         }
@@ -453,7 +453,7 @@ class RestUtils
             'WHERE `time` > (CURRENT_TIMESTAMP - 60*60*24) AND ip ="'.$this->log->get_ip().'"');
         switch (TRUE) {
             case $total_attempt_in_24h == $max_attempt_in_24h:
-                mail('funkysuperstar@hotmail.fr, t.finck@enchantier.com, t.finck@hotmail.fr', 'Blockage API',
+                mail(EMAIL_ALERT, 'Blockage API',
                     $this->log->get_ip().' doit etre banni');
             case $total_attempt_in_24h >= $max_attempt_in_24h:
                 $this->log->logging('IP banned '.$this->log->get_ip().', '.$total_attempt_in_24h.' attempts', 'ATTACK');

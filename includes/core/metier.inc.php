@@ -13,7 +13,7 @@ class Metier extends Database
     {
         $this->now   = date('Y-m-d H:i:s');
         $this->api   = $api;
-        // debug trace 
+        // debug trace
         $this->debug = TRUE;
         if ($this->debug) $this->log   = new Log(1, 0, LOG_FILE);
     }
@@ -86,12 +86,12 @@ class Metier extends Database
                     $ip_infos          = json_decode($client->curl_response, true);
                     $ip_infos['as_ip'] = $ip_infos['as']; // reserved word in mysql
                     unset($ip_infos['as']); // reserved word in mysql
-                    unset($ip_infos['query']); // not usefull 
-                    unset($ip_infos['status']); // not usefull 
+                    unset($ip_infos['query']); // not usefull
+                    unset($ip_infos['status']); // not usefull
                     $datas             += $ip_infos;
                 }
             } catch (Exception $exc) {
-                
+
             }
         }
         switch (ACTIVITY_DESTINATION) {
@@ -159,7 +159,8 @@ class Metier extends Database
 
     public function rewriteImgUrl($text)
     {
-        //$text = str_replace('src="../img/', 'src="'.$this->api->protocol.'://www.enchantier.com/img/', $text);
+        // useful if you provide html content
+        //$text = str_replace('src="../img/', 'src="'.$this->api->protocol.'://www.domain.com/img/', $text);
         return $text;
     }
 

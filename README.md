@@ -16,6 +16,8 @@ There are a search features : global, by columns, ordered etc.
 
 This RESTful API is secured by a ban system for those who do not know how to implement it. 20 errors / 24 hours is the limit before be banned.
 
+Method OPTIONS provide fields descriptions !
+
 # Releases
 First version accept POST, GET, PUT, DELETE methods
 
@@ -26,6 +28,7 @@ Third version give catalog at root call (only in edit mode for safety)
   -  $api->metier->cache(3600*24); // return cache if available, 1day
 - I've added a session/context système based on token
   - $api->session
+- Method OPTIONS provide fields descriptions 
 
 # Coding
 If you want to bypass a functionality, just implement a new class according to the interface provided.

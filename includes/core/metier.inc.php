@@ -19,13 +19,17 @@ class Metier extends Database
     }
 
     // get the called app associated table fields
-    public function get_fields_from_current_table()
+    public function get_fields_from_current_table($full = false)
     {
         $fields_result = $this->api->db->query('SHOW COLUMNS FROM '.$this->api->program_name.' WHERE Field NOT IN("'.implode('", "',
                 json_decode(RESERVED_WORDS)).'")');
         $fields        = array();
         while ($row           = $this->api->db->fetch($fields_result)) {
-            $fields[] = $row['Field'];
+            if ($full) {// give all info
+                $fields[] = $row;
+            } else {    // give minimal info
+                $fields[] = $row['Field'];
+            }
         }
         return $fields;
     }

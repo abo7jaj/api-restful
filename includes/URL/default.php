@@ -38,8 +38,8 @@ class default_method implements Method
     }
 
     function GET(RestUtils &$api, $previousTime = 0)
-    {   
-        $api->metier->cache(3600*24); // return cache if available, 1 day
+    {
+        $api->metier->cache(3600 * 24); // return cache if available, 1 day
         // store beginning time
         $timestart = microtime(true);
         // get arguments passed in url, filter, limit, order, etc
@@ -178,5 +178,41 @@ class default_method implements Method
         } else {
             $api->sendResponse(304);
         }
+    }
+
+    // will provide fields descriptions !
+    function OPTIONS(RestUtils &$api)
+    {
+        // store beginning time
+        $timestart = microtime(true);
+        if (!$api->db->table_exists($api->program_name)) {  // check if there is a table
+            $api->sendResponse(404);
+        }
+        $datas      = array();
+        $tmp_arrays = $api->metier->get_fields_from_current_table(TRUE);    // TRUE = Full details
+        foreach ($tmp_arrays as $tmp_array) {
+            $tmp_array = array_change_key_case($tmp_array);
+            $matches   = null;
+            if (preg_match('/^([a-zA-Z]{0,50})\\(([0-9]{1,9})\\)$/i', $tmp_array['type'], $matches)) {
+                $tmp_array['type']   = $matches[1];   //the type is here
+                $tmp_array['length'] = $matches[2];   //the length is here
+            } else {
+                $tmp_array['length'] = 0;   //No length
+            }
+            if ($tmp_array['default'] == NULL) {
+                $tmp_array['default'] = '';
+            }
+            $tmp_array['required'] = $tmp_array['null'] == 'NO';
+            unset($tmp_array['key']);   // not useful
+            unset($tmp_array['extra']); // not useful
+            unset($tmp_array['null']);  // not useful
+            $datas['fields'][]     = $tmp_array;
+        }
+        $datas['total']          = $datas['total_overall']  = count($datas['fields']);
+        // time
+        $timeend                 = microtime(true);
+        $page_load_time          = number_format($timeend - $timestart, 3);
+        $datas['execution_time'] = $page_load_time;
+        $api->sendResponse(200, $datas);
     }
 }
